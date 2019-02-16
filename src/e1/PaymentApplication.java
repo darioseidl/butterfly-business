@@ -1,17 +1,22 @@
-package e1.payment;
+package e1;
 
 import e1.credit.CreditCards;
 import e1.credit.LuhnValidator;
 import e1.csv.CSVFileWriter;
 import e1.files.FileReader;
 import e1.intelligence.BusinessFileWriter;
+import e1.operation.PaymentOperation;
+import e1.operation.SevenSegmentMapping;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class PaymentTranslation {
+public class PaymentApplication {
 
     public static void main(String[] args) {
 
@@ -48,9 +53,9 @@ public class PaymentTranslation {
 
         paymentOperations.sort(Comparator.comparing(PaymentOperation::getDate));
 
-        CSVFileWriter.writeCSV(paymentOperations, "Payments.csv");
+        CSVFileWriter.writeCSV(paymentOperations, "output/Payments.csv");
 
-        BusinessFileWriter.writeBusinessIntelligenceReport(paymentOperations, "Report.txt");
+        BusinessFileWriter.writeBusinessIntelligenceReport(paymentOperations, "output/Report.txt");
     }
 
     public static String getIssuer(String creditNumber) {

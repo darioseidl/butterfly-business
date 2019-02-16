@@ -1,7 +1,7 @@
 package e1.intelligence;
 
 import e1.files.FileWriter;
-import e1.payment.PaymentOperation;
+import e1.operation.PaymentOperation;
 
 import java.time.YearMonth;
 import java.time.format.TextStyle;
@@ -21,13 +21,15 @@ public class BusinessFileWriter {
 
         Map.Entry<String, Long> mostUsedIssuer = BusinessIntelligence.getMostUsedIssuer(paymentOperations);
 
-        List<String> resultLine = new ArrayList<>();
-        resultLine.add("The total is " + totalAmount);
-        resultLine.add("The most profitable month is " + getNameOfMonth(mostProfitable.getKey()) + " with a total of " + mostProfitable.getValue());
-        resultLine.add("The average amount per month is " + averageAmountPerMonth);
-        resultLine.add("The most used issuer is " + mostUsedIssuer);
+        List<String> resultLines = new ArrayList<>();
+        resultLines.add("The total is " + totalAmount);
+        resultLines.add("The most profitable month is " + getNameOfMonth(mostProfitable.getKey()) + " with a total of " + mostProfitable.getValue());
+        resultLines.add("The average amount per month is " + averageAmountPerMonth);
+        resultLines.add("The most used issuer is " + mostUsedIssuer.getKey() + " was used " + mostUsedIssuer.getValue() + " times");
 
-        FileWriter.write(resultLine, filePath);
+        System.out.println(String.join("\n", resultLines));
+
+        FileWriter.write(resultLines, filePath);
     }
 
     private static String getNameOfMonth(YearMonth yearMonth) {

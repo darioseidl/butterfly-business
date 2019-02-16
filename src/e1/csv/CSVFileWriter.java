@@ -1,6 +1,6 @@
 package e1.csv;
 
-import e1.payment.PaymentOperation;
+import e1.operation.PaymentOperation;
 import e1.files.FileWriter;
 
 import java.util.List;
