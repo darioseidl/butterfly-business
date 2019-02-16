@@ -1,4 +1,6 @@
-package e1;
+package e1.intelligence;
+
+import e1.PaymentOperation;
 
 import java.time.YearMonth;
 import java.util.Comparator;

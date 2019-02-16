@@ -2,10 +2,9 @@ package e1;
 
 import e1.credit.CreditCards;
 import e1.credit.LuhnValidator;
+import e1.intelligence.BusinessFileWriter;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -46,23 +45,9 @@ public class PaymentTranslation {
 
         paymentOperations.sort(Comparator.comparing(PaymentOperation::getDate));
 
-        CSVFileWriter.writeCSV(paymentOperations);
+        CSVFileWriter.writeCSV(paymentOperations, "Payments.csv");
 
-        double totalAmount = BusinessIntelligence.getTotalAmount(paymentOperations);
-
-        Map.Entry<YearMonth, Double> mostProfitable = BusinessIntelligence.getMostProfitableMonth(paymentOperations);
-
-        double averageAmountPerMonth = BusinessIntelligence.getAverageAmountPerMonth(paymentOperations);
-
-        Map.Entry<String, Long> mostUsedIssuer = BusinessIntelligence.getMostUsedIssuer(paymentOperations);
-
-        List<String> resultLine = new ArrayList<>();
-        resultLine.add("The total is " + totalAmount);
-        resultLine.add("The most profitable month is " + getNameOfMonth(mostProfitable.getKey()) + " with a total of " + mostProfitable.getValue());
-        resultLine.add("The average amount per month is " + averageAmountPerMonth);
-        resultLine.add("The most used issuer is " + mostUsedIssuer);
-
-        FileWriter.write(resultLine, "Result.txt");
+        BusinessFileWriter.writeBusinessIntelligenceReport(paymentOperations, "Report.txt");
     }
 
     public static String getIssuer(String creditNumber) {
@@ -77,19 +62,6 @@ public class PaymentTranslation {
         else
             return issuer;
     }
-
-    private static String getNameOfMonth(YearMonth yearMonth) {
-        return yearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-    }
-
-
-
-
-
-
-
-
-
 
     public static List<PaymentOperation> getPaymentOperations(List<String> parts) {
         return parts.stream()
