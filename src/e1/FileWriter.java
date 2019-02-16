@@ -8,7 +8,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 
-public class WritingFiles {
+public class FileWriter {
 
     public static void write(List<String> lines, String filePath) {
         try {

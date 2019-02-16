@@ -40,29 +40,25 @@ public class PaymentTranslation {
                 }).collect(Collectors.toList());
 
 
-        List<PaymentOperation> documents = getDocument(parsedLines);
+        List<PaymentOperation> paymentOperations = getPaymentOperations(parsedLines);
 
 
-        documents.forEach(e -> e.setIssuer(getIssuer(e.getCriditNumb())));
+        paymentOperations.forEach(e -> e.setIssuer(getIssuer(e.getCriditNumb())));
 
-        documents.sort(Comparator.comparing(PaymentOperation::getDate));
+        paymentOperations.sort(Comparator.comparing(PaymentOperation::getDate));
+
+        CSVFileWriter.writeCSV(paymentOperations);
 
 
-        List<String> csvLines = documents.stream().map(PaymentOperation::toCSV).collect(Collectors.toList());
 
-        System.out.println(String.join("\n", csvLines));
 
-        csvLines.add(0, "Date, Credit-Card-Number, Credit-Card-Issuer, Amount-Paid");
-        WritingFiles.write(csvLines, "butterfly.csv");
-        double totalAmount = documents.stream()
+        double totalAmount = paymentOperations.stream()
                 .mapToDouble(PaymentOperation::getAmount)
                 .sum();
 
         System.out.println("The total is " + totalAmount);
 
-
-
-        Map<YearMonth, Double> groupSumByYearMonth = documents.stream()
+        Map<YearMonth, Double> groupSumByYearMonth = paymentOperations.stream()
                 .collect(Collectors.groupingBy(PaymentOperation::getYearMonth, Collectors.summingDouble(PaymentOperation::getAmount)));
 
         System.out.println("sum by month: " + groupSumByYearMonth);
@@ -75,7 +71,7 @@ public class PaymentTranslation {
         System.out.println("most profitable month: " + mostProfitable.getKey().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
 
 
-        Map<String, Long> issuerCount = documents.stream()
+        Map<String, Long> issuerCount = paymentOperations.stream()
                 .collect(Collectors.groupingBy(PaymentOperation::getIssuer, Collectors.counting()));
 
         System.out.println("issuer count: " + issuerCount);
@@ -95,7 +91,7 @@ public class PaymentTranslation {
         resultLine.add("average by month: " + totalAmount / numberOfMonths);
         resultLine.add("most used issuer: " + mostUsedIssuer);
 
-        WritingFiles.write(resultLine, "Result.txt");
+        FileWriter.write(resultLine, "Result.txt");
     }
 
     public static String getIssuer(String creditNumber) {
@@ -120,7 +116,7 @@ public class PaymentTranslation {
 
 
 
-    public static List<PaymentOperation> getDocument(List<String> parts) {
+    public static List<PaymentOperation> getPaymentOperations(List<String> parts) {
         return parts.stream()
                 .map(line -> line.split(" "))
                 .map(columns -> new PaymentOperation(
