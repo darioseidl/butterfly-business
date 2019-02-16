@@ -5,6 +5,7 @@ import e1.credit.LuhnValidator;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -86,7 +87,7 @@ public class textRader {
                         .max((entry1, entry2) -> Double.compare(entry1.getValue(), entry2.getValue()))
                         .get();
 
-        System.out.println("most profitable month: " + mostProfitable);
+        System.out.println("most profitable month: " + mostProfitable.getKey().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
 
         Map<YearMonth, Double> groupAverageByYearMonth = documents.stream()
                 .collect(Collectors.groupingBy(document::getYearMonth, Collectors.averagingDouble(document::getAmount)));
@@ -106,7 +107,8 @@ public class textRader {
         System.out.println("most used issuer: " + mostUsedIssuer);
         List<String> resultLine=new ArrayList<>();
         resultLine.add("The total is "+ totalAmount);
-        resultLine.add("most profitable month: " + mostProfitable);
+        resultLine.add("most profitable month: " + mostProfitable.getKey().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+                + " with a total of " + mostProfitable.getValue());
         resultLine.add("average by month: " + groupAverageByYearMonth);
         resultLine.add("most used issuer: " + mostUsedIssuer);
 
