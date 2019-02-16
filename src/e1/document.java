@@ -9,11 +9,13 @@ public class document {
                 "date='" + date + '\'' +
                 ", criditNumb='" + criditNumb + '\'' +
                 ", amount='" + amount + '\'' +
+                ", issuer='" + issuer + '\'' +
                 '}';
     }
 
     private String criditNumb;
     private String amount;
+    private String issuer;
 
     public document(String date, String criditNumb, String amount) {
         this.date = date;
@@ -29,6 +31,19 @@ public class document {
         return criditNumb;
     }
 
+
     public String getAmount() {
         return amount;
-    }}
+    }
+
+public  String getIssuer(){
+        return issuer;
+
+}
+public void setIssuer(String issuer){
+        this.issuer=issuer;
+
+}
+}
+
+

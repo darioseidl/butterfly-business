@@ -48,6 +48,8 @@ public class textRader {
                 .map(e -> getIssuer(e.getCriditNumb()))
                 .collect(Collectors.toList());
         System.out.println(collect);
+        documents.forEach(e->e.setIssuer(getIssuer(e.getCriditNumb())));
+        System.out.println(documents);
 
     }
 
