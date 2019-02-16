@@ -5,6 +5,7 @@ import e1.credit.LuhnValidator;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class textRader {
                             .map(digit -> SevenSegmentMapping.strangeDigits.get(digit))
                             .collect(Collectors.joining());
 
-            System.out.println(digits);
+//            System.out.println(digits);
 
                     return digits;
 
@@ -58,12 +59,12 @@ public class textRader {
 
         documents.sort(Comparator.comparing(document::getDate));
 
-        System.out.println(documents);
-
 //        String collect = documents.stream().map(e -> e.getAmount().toString() + "+").collect(Collectors.joining());
 //        System.out.println(collect);
 
         List<String> csvLines = documents.stream().map(e -> e.toCSV()).collect(Collectors.toList());
+
+        System.out.println(String.join("\n", csvLines));
 
         csvLines.add(0, "Date, Credit-Card-Number, Credit-Card-Issuer, Amount-Paid");
         WritingFiles.write(csvLines, "butterfly.csv");
@@ -74,11 +75,38 @@ public class textRader {
         System.out.println("The total is "+ totalAmount);
 
 
-        Map<YearMonth, List<document>> mapByYearMonth = documents.stream()
-                .collect(Collectors.groupingBy(document::getYearMonth));
+//        Map<YearMonth, List<document>> groupByYearMonth = documents.stream()
+//                .collect(Collectors.groupingBy(document::getYearMonth));
+//        System.out.println(groupByYearMonth);
 
-        System.out.println(mapByYearMonth);
+        Map<YearMonth, Double> groupSumByYearMonth = documents.stream()
+                .collect(Collectors.groupingBy(document::getYearMonth, Collectors.summingDouble(document::getAmount)));
 
+        System.out.println("sum by month: " + groupSumByYearMonth);
+
+        Map.Entry<YearMonth, Double> mostProfitable =
+                groupSumByYearMonth.entrySet().stream()
+                        .max((entry1, entry2) -> Double.compare(entry1.getValue(), entry2.getValue()))
+                        .get();
+
+        System.out.println("most profitable month: " + mostProfitable);
+
+        Map<YearMonth, Double> groupAverageByYearMonth = documents.stream()
+                .collect(Collectors.groupingBy(document::getYearMonth, Collectors.averagingDouble(document::getAmount)));
+
+        System.out.println("average by month: " + groupAverageByYearMonth);
+
+        Map<String, Long> issuerCount = documents.stream()
+                .collect(Collectors.groupingBy(document::getIssuer, Collectors.counting()));
+
+        System.out.println("issuer count: " + issuerCount);
+
+        Map.Entry<String, Long> mostUsedIssuer =
+                issuerCount.entrySet().stream()
+                        .max((entry1, entry2) -> Long.compare(entry1.getValue(), entry2.getValue()))
+                        .get();
+
+        System.out.println("most used issuer: " + mostUsedIssuer);
     }
 
     public static String getIssuer(String creditNumber) {
