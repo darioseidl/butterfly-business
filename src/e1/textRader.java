@@ -1,5 +1,7 @@
 package e1;
 
+import e1.credit.LuhnValidator;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -41,6 +43,18 @@ public class textRader {
         List<document> documents = getDocument(parsedLines);
         System.out.println(documents);
 
+    }
+
+    public static String getIssuer(String creditNumber) {
+        LuhnValidator luhnValidator = new LuhnValidator();
+        if (luhnValidator.isValid(creditNumber))
+            return "invalid";
+
+        String issuer = "tobedone";
+        if (issuer == null)
+            return "unknown";
+        else
+            return issuer;
     }
 
     public static List<document> getDocument(List<String> parts) {
