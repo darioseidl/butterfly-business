@@ -42,22 +42,28 @@ public class textRader {
 
 //        System.out.println(parsedLines);
         List<document> documents = getDocument(parsedLines);
-        System.out.println(documents);
-        LuhnValidator luhnValidator = new LuhnValidator();
-        List<String> collect = documents.stream()
-                .map(e -> getIssuer(e.getCriditNumb()))
-                .collect(Collectors.toList());
-        System.out.println(collect);
-        documents.forEach(e->e.setIssuer(getIssuer(e.getCriditNumb())));
+
+//        System.out.println(documents);
+//        LuhnValidator luhnValidator = new LuhnValidator();
+//        List<String> collect = documents.stream()
+//                .map(e -> getIssuer(e.getCriditNumb()))
+//                .collect(Collectors.toList());
+//        System.out.println(collect);
+
+        documents.forEach(e -> e.setIssuer(getIssuer(e.getCriditNumb())));
+
         System.out.println(documents);
 
+        List<String> csvLines = documents.stream().map(e -> e.toCSV()).collect(Collectors.toList());
+
+        csvLines.add(0, "Date, Credit-Card-Number, Credit-Card-Issuer, Amount-Paid");
+        WritingFiles.write(csvLines, "butterfly.csv");
     }
 
     public static String getIssuer(String creditNumber) {
         LuhnValidator luhnValidator = new LuhnValidator();
         if (!luhnValidator.isValid(creditNumber))
             return "invalid";
-
 
         String issuer =  CreditCards.getCreditCard(creditNumber);
 

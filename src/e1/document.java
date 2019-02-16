@@ -2,17 +2,6 @@ package e1;
 
 public class document {
     private String date;
-
-    @Override
-    public String toString() {
-        return "document{" +
-                "date='" + date + '\'' +
-                ", criditNumb='" + criditNumb + '\'' +
-                ", amount='" + amount + '\'' +
-                ", issuer='" + issuer + '\'' +
-                '}';
-    }
-
     private String criditNumb;
     private String amount;
     private String issuer;
@@ -36,14 +25,31 @@ public class document {
         return amount;
     }
 
-public  String getIssuer(){
+    public String getIssuer() {
         return issuer;
 
-}
-public void setIssuer(String issuer){
-        this.issuer=issuer;
+    }
 
-}
+    public void setIssuer(String issuer) {
+        this.issuer = issuer;
+
+    }
+
+    @Override
+    public String toString() {
+        return "document{" +
+                "date=" + date +
+                ", criditNumb=" + criditNumb +
+                ", amount=" + amount +
+                ", issuer=" + issuer +
+                '}';
+    }
+
+    public String toCSV() {
+        return date + ", " + criditNumb + ", " + issuer + ", " + amount;
+    }
+
+
 }
 
 
