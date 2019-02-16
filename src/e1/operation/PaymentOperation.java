@@ -6,13 +6,13 @@ import java.time.YearMonth;
 public class PaymentOperation {
 
     private LocalDate date;
-    private String criditNumb;
+    private String creditNumber;
     private Double amount;
     private String issuer;
 
-    public PaymentOperation(LocalDate date, String criditNumb, Double amount) {
+    public PaymentOperation(LocalDate date, String creditNumber, Double amount) {
         this.date = date;
-        this.criditNumb = criditNumb;
+        this.creditNumber = creditNumber;
         this.amount = amount;
     }
 
@@ -24,8 +24,8 @@ public class PaymentOperation {
         return YearMonth.from(date);
     }
 
-    public String getCriditNumb() {
-        return criditNumb;
+    public String getCreditNumber() {
+        return creditNumber;
     }
 
     public Double getAmount() {
@@ -44,15 +44,16 @@ public class PaymentOperation {
     public String toString() {
         return "document{" +
                 "date=" + date +
-                ", criditNumb=" + criditNumb +
+                ", creditNumber=" + creditNumber +
                 ", amount=" + amount +
                 ", issuer=" + issuer +
                 '}';
     }
 
     public String toCSV() {
-        return date + ", " + criditNumb + ", " + issuer + ", " + amount;
+        return date + ", " + creditNumber + ", " + issuer + ", " + amount;
     }
+
 }
 
 

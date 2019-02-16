@@ -8,8 +8,6 @@ import e1.intelligence.BusinessFileWriter;
 import e1.operation.PaymentOperation;
 import e1.operation.SevenSegmentMapping;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -49,7 +47,8 @@ public class PaymentApplication {
 
         List<PaymentOperation> paymentOperations = getPaymentOperations(parsedLines);
 
-        paymentOperations.forEach(e -> e.setIssuer(getIssuer(e.getCriditNumb())));
+        paymentOperations.forEach(paymentOperation -> paymentOperation
+                .setIssuer(getIssuer(paymentOperation.getCreditNumber())));
 
         paymentOperations.sort(Comparator.comparing(PaymentOperation::getDate));
 
