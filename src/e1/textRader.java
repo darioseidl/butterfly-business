@@ -89,10 +89,10 @@ public class textRader {
 
         System.out.println("most profitable month: " + mostProfitable.getKey().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
 
-        Map<YearMonth, Double> groupAverageByYearMonth = documents.stream()
-                .collect(Collectors.groupingBy(document::getYearMonth, Collectors.averagingDouble(document::getAmount)));
-
-        System.out.println("average by month: " + groupAverageByYearMonth);
+//        Map<YearMonth, Double> groupAverageByYearMonth = documents.stream()
+//                .collect(Collectors.groupingBy(document::getYearMonth, Collectors.averagingDouble(document::getAmount)));
+//
+//        System.out.println("average by month: " + groupAverageByYearMonth);
 
         Map<String, Long> issuerCount = documents.stream()
                 .collect(Collectors.groupingBy(document::getIssuer, Collectors.counting()));
@@ -109,7 +109,9 @@ public class textRader {
         resultLine.add("The total is "+ totalAmount);
         resultLine.add("most profitable month: " + mostProfitable.getKey().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
                 + " with a total of " + mostProfitable.getValue());
-        resultLine.add("average by month: " + groupAverageByYearMonth);
+        int numberOfMonths = groupSumByYearMonth.keySet().size();
+        System.out.println(numberOfMonths);
+        resultLine.add("average by month: " + totalAmount/numberOfMonths);
         resultLine.add("most used issuer: " + mostUsedIssuer);
 
         WritingFiles.write(resultLine,"Result.txt");
