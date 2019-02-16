@@ -42,54 +42,25 @@ public class PaymentTranslation {
 
         List<PaymentOperation> paymentOperations = getPaymentOperations(parsedLines);
 
-
         paymentOperations.forEach(e -> e.setIssuer(getIssuer(e.getCriditNumb())));
 
         paymentOperations.sort(Comparator.comparing(PaymentOperation::getDate));
 
         CSVFileWriter.writeCSV(paymentOperations);
 
+        double totalAmount = BusinessIntelligence.getTotalAmount(paymentOperations);
 
+        Map.Entry<YearMonth, Double> mostProfitable = BusinessIntelligence.getMostProfitableMonth(paymentOperations);
 
+        double averageAmountPerMonth = BusinessIntelligence.getAverageAmountPerMonth(paymentOperations);
 
-        double totalAmount = paymentOperations.stream()
-                .mapToDouble(PaymentOperation::getAmount)
-                .sum();
+        Map.Entry<String, Long> mostUsedIssuer = BusinessIntelligence.getMostUsedIssuer(paymentOperations);
 
-        System.out.println("The total is " + totalAmount);
-
-        Map<YearMonth, Double> groupSumByYearMonth = paymentOperations.stream()
-                .collect(Collectors.groupingBy(PaymentOperation::getYearMonth, Collectors.summingDouble(PaymentOperation::getAmount)));
-
-        System.out.println("sum by month: " + groupSumByYearMonth);
-
-        Map.Entry<YearMonth, Double> mostProfitable =
-                groupSumByYearMonth.entrySet().stream()
-                        .max(Comparator.comparingDouble(Map.Entry::getValue))
-                        .get();
-
-        System.out.println("most profitable month: " + mostProfitable.getKey().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
-
-
-        Map<String, Long> issuerCount = paymentOperations.stream()
-                .collect(Collectors.groupingBy(PaymentOperation::getIssuer, Collectors.counting()));
-
-        System.out.println("issuer count: " + issuerCount);
-
-        Map.Entry<String, Long> mostUsedIssuer =
-                issuerCount.entrySet().stream()
-                        .max(Comparator.comparingLong(Map.Entry::getValue))
-                        .get();
-
-        System.out.println("most used issuer: " + mostUsedIssuer);
         List<String> resultLine = new ArrayList<>();
         resultLine.add("The total is " + totalAmount);
-        resultLine.add("most profitable month: " + mostProfitable.getKey().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
-                + " with a total of " + mostProfitable.getValue());
-        int numberOfMonths = groupSumByYearMonth.keySet().size();
-        System.out.println(numberOfMonths);
-        resultLine.add("average by month: " + totalAmount / numberOfMonths);
-        resultLine.add("most used issuer: " + mostUsedIssuer);
+        resultLine.add("The most profitable month is " + getNameOfMonth(mostProfitable.getKey()) + " with a total of " + mostProfitable.getValue());
+        resultLine.add("The average amount per month is " + averageAmountPerMonth);
+        resultLine.add("The most used issuer is " + mostUsedIssuer);
 
         FileWriter.write(resultLine, "Result.txt");
     }
@@ -105,6 +76,10 @@ public class PaymentTranslation {
             return "unknown";
         else
             return issuer;
+    }
+
+    private static String getNameOfMonth(YearMonth yearMonth) {
+        return yearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
     }
 
 
