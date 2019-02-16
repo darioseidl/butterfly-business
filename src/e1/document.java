@@ -1,20 +1,27 @@
 package e1;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+
 public class document {
-    private String date;
+    private LocalDate date;
     private String criditNumb;
     private Double amount;
     private String issuer;
 
-    public document(String date, String criditNumb, Double amount) {
+    public document(LocalDate date, String criditNumb, Double amount) {
         this.date = date;
         this.criditNumb = criditNumb;
         this.amount = amount;
 
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
+    }
+
+    public YearMonth getYearMonth() {
+        return YearMonth.from(date);
     }
 
     public String getCriditNumb() {

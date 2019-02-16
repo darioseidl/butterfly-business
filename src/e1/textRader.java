@@ -3,8 +3,11 @@ package e1;
 import e1.credit.CreditCards;
 import e1.credit.LuhnValidator;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -57,6 +60,9 @@ public class textRader {
 
         System.out.println(documents);
 
+//        String collect = documents.stream().map(e -> e.getAmount().toString() + "+").collect(Collectors.joining());
+//        System.out.println(collect);
+
         List<String> csvLines = documents.stream().map(e -> e.toCSV()).collect(Collectors.toList());
 
         csvLines.add(0, "Date, Credit-Card-Number, Credit-Card-Issuer, Amount-Paid");
@@ -64,7 +70,14 @@ public class textRader {
         double totalAmount = documents.stream()
                 .mapToDouble(document::getAmount)
                 .sum();
+
         System.out.println("The total is "+ totalAmount);
+
+
+        Map<YearMonth, List<document>> mapByYearMonth = documents.stream()
+                .collect(Collectors.groupingBy(document::getYearMonth));
+
+        System.out.println(mapByYearMonth);
 
     }
 
@@ -85,12 +98,10 @@ public class textRader {
         return parts.stream()
                 .map(line -> line.split(" "))
                 .map(columns -> new document(
-                        columns[0],
+                        LocalDate.parse(columns[0]),
                         columns[1],
                         Double.valueOf(columns[2])))
                 .collect(Collectors.toList());
-
-
     }
 
     static List<String> partition(String line) {
