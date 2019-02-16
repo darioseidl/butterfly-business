@@ -10,8 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-
-public class textRader {
+public class PaymentTranslation {
 
     public static void main(String[] args) {
 
@@ -44,7 +43,7 @@ public class textRader {
                 }).collect(Collectors.toList());
 
 //        System.out.println(parsedLines);
-        List<document> documents = getDocument(parsedLines);
+        List<PaymentOperation> documents = getDocument(parsedLines);
 
 //        System.out.println(documents);
 //        LuhnValidator luhnValidator = new LuhnValidator();
@@ -55,7 +54,7 @@ public class textRader {
 
         documents.forEach(e -> e.setIssuer(getIssuer(e.getCriditNumb())));
 
-        documents.sort(Comparator.comparing(document::getDate));
+        documents.sort(Comparator.comparing(PaymentOperation::getDate));
 
 //        String collect = documents.stream().map(e -> e.getAmount().toString() + "+").collect(Collectors.joining());
 //        System.out.println(collect);
@@ -67,10 +66,10 @@ public class textRader {
         csvLines.add(0, "Date, Credit-Card-Number, Credit-Card-Issuer, Amount-Paid");
         WritingFiles.write(csvLines, "butterfly.csv");
         double totalAmount = documents.stream()
-                .mapToDouble(document::getAmount)
+                .mapToDouble(PaymentOperation::getAmount)
                 .sum();
 
-        System.out.println("The total is "+ totalAmount);
+        System.out.println("The total is " + totalAmount);
 
 
 //        Map<YearMonth, List<document>> groupByYearMonth = documents.stream()
@@ -78,7 +77,7 @@ public class textRader {
 //        System.out.println(groupByYearMonth);
 
         Map<YearMonth, Double> groupSumByYearMonth = documents.stream()
-                .collect(Collectors.groupingBy(document::getYearMonth, Collectors.summingDouble(document::getAmount)));
+                .collect(Collectors.groupingBy(PaymentOperation::getYearMonth, Collectors.summingDouble(PaymentOperation::getAmount)));
 
         System.out.println("sum by month: " + groupSumByYearMonth);
 
@@ -95,7 +94,7 @@ public class textRader {
 //        System.out.println("average by month: " + groupAverageByYearMonth);
 
         Map<String, Long> issuerCount = documents.stream()
-                .collect(Collectors.groupingBy(document::getIssuer, Collectors.counting()));
+                .collect(Collectors.groupingBy(PaymentOperation::getIssuer, Collectors.counting()));
 
         System.out.println("issuer count: " + issuerCount);
 
@@ -105,16 +104,16 @@ public class textRader {
                         .get();
 
         System.out.println("most used issuer: " + mostUsedIssuer);
-        List<String> resultLine=new ArrayList<>();
-        resultLine.add("The total is "+ totalAmount);
+        List<String> resultLine = new ArrayList<>();
+        resultLine.add("The total is " + totalAmount);
         resultLine.add("most profitable month: " + mostProfitable.getKey().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
                 + " with a total of " + mostProfitable.getValue());
         int numberOfMonths = groupSumByYearMonth.keySet().size();
         System.out.println(numberOfMonths);
-        resultLine.add("average by month: " + totalAmount/numberOfMonths);
+        resultLine.add("average by month: " + totalAmount / numberOfMonths);
         resultLine.add("most used issuer: " + mostUsedIssuer);
 
-        WritingFiles.write(resultLine,"Result.txt");
+        WritingFiles.write(resultLine, "Result.txt");
     }
 
     public static String getIssuer(String creditNumber) {
@@ -122,7 +121,7 @@ public class textRader {
         if (!luhnValidator.isValid(creditNumber))
             return "invalid";
 
-        String issuer =  CreditCards.getCreditCard(creditNumber);
+        String issuer = CreditCards.getCreditCard(creditNumber);
 
         if (issuer == null)
             return "unknown";
@@ -130,10 +129,10 @@ public class textRader {
             return issuer;
     }
 
-    public static List<document> getDocument(List<String> parts) {
+    public static List<PaymentOperation> getDocument(List<String> parts) {
         return parts.stream()
                 .map(line -> line.split(" "))
-                .map(columns -> new document(
+                .map(columns -> new PaymentOperation(
                         LocalDate.parse(columns[0]),
                         columns[1],
                         Double.valueOf(columns[2])))
@@ -145,7 +144,6 @@ public class textRader {
                 .mapToObj(index -> line.substring(index, index + 3))
                 .collect(Collectors.toList());
     }
-
 
 
 }

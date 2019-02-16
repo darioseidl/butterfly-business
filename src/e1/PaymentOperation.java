@@ -3,17 +3,17 @@ package e1;
 import java.time.LocalDate;
 import java.time.YearMonth;
 
-public class document {
+public class PaymentOperation {
+
     private LocalDate date;
     private String criditNumb;
     private Double amount;
     private String issuer;
 
-    public document(LocalDate date, String criditNumb, Double amount) {
+    public PaymentOperation(LocalDate date, String criditNumb, Double amount) {
         this.date = date;
         this.criditNumb = criditNumb;
         this.amount = amount;
-
     }
 
     public LocalDate getDate() {
@@ -28,19 +28,16 @@ public class document {
         return criditNumb;
     }
 
-
     public Double getAmount() {
         return amount;
     }
 
     public String getIssuer() {
         return issuer;
-
     }
 
     public void setIssuer(String issuer) {
         this.issuer = issuer;
-
     }
 
     @Override
@@ -56,8 +53,6 @@ public class document {
     public String toCSV() {
         return date + ", " + criditNumb + ", " + issuer + ", " + amount;
     }
-
-
 }
 
 
