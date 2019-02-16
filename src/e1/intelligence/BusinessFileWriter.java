@@ -1,7 +1,7 @@
 package e1.intelligence;
 
-import e1.FileWriter;
-import e1.PaymentOperation;
+import e1.files.FileWriter;
+import e1.payment.PaymentOperation;
 
 import java.time.YearMonth;
 import java.time.format.TextStyle;

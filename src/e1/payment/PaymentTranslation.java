@@ -1,7 +1,9 @@
-package e1;
+package e1.payment;
 
 import e1.credit.CreditCards;
 import e1.credit.LuhnValidator;
+import e1.csv.CSVFileWriter;
+import e1.files.FileReader;
 import e1.intelligence.BusinessFileWriter;
 
 import java.time.LocalDate;
@@ -15,7 +17,8 @@ public class PaymentTranslation {
 
         FileReader fileReader = new FileReader();
 
-        List<String> lines = fileReader.asList("Files/buterfly-business.txt");
+        List<String> lines = fileReader.asList("resources/buterfly-business.txt");
+
         List<String> parsedLines = IntStream.iterate(0, i -> i + 3).limit(lines.size() / 3)
                 .mapToObj(i -> {
 

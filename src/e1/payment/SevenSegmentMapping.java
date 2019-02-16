@@ -1,10 +1,10 @@
-package e1;
+package e1.payment;
 
 import java.util.HashMap;
 
 public class SevenSegmentMapping {
 
-    static HashMap<String, String> strangeDigits = new HashMap<>();
+    public static final HashMap<String, String> strangeDigits = new HashMap<>();
 
     static {
         strangeDigits.put(

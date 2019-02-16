@@ -1,4 +1,7 @@
-package e1;
+package e1.csv;
+
+import e1.payment.PaymentOperation;
+import e1.files.FileWriter;
 
 import java.util.List;
 import java.util.stream.Collectors;
