@@ -42,12 +42,17 @@ public class textRader {
 //        System.out.println(parsedLines);
         List<document> documents = getDocument(parsedLines);
         System.out.println(documents);
+        LuhnValidator luhnValidator = new LuhnValidator();
+        List<String> collect = documents.stream()
+                .map(e -> getIssuer(e.getCriditNumb()))
+                .collect(Collectors.toList());
+        System.out.println(collect);
 
     }
 
     public static String getIssuer(String creditNumber) {
         LuhnValidator luhnValidator = new LuhnValidator();
-        if (luhnValidator.isValid(creditNumber))
+        if (!luhnValidator.isValid(creditNumber))
             return "invalid";
 
         String issuer = "tobedone";
