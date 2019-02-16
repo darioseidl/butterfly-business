@@ -47,27 +47,13 @@ public class PaymentApplication {
 
         List<PaymentOperation> paymentOperations = getPaymentOperations(parsedLines);
 
-        paymentOperations.forEach(paymentOperation -> paymentOperation
-                .setIssuer(getIssuer(paymentOperation.getCreditNumber())));
+        paymentOperations.forEach(PaymentOperation::updateIssuerFromCreditNumber);
 
         paymentOperations.sort(Comparator.comparing(PaymentOperation::getDate));
 
         CSVFileWriter.writeCSV(paymentOperations, "output/Payments.csv");
 
         BusinessFileWriter.writeBusinessIntelligenceReport(paymentOperations, "output/Report.txt");
-    }
-
-    public static String getIssuer(String creditNumber) {
-        LuhnValidator luhnValidator = new LuhnValidator();
-        if (!luhnValidator.isValid(creditNumber))
-            return "invalid";
-
-        String issuer = CreditCards.getCreditCard(creditNumber);
-
-        if (issuer == null)
-            return "unknown";
-        else
-            return issuer;
     }
 
     public static List<PaymentOperation> getPaymentOperations(List<String> parts) {

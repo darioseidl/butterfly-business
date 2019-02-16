@@ -1,5 +1,8 @@
 package e1.operation;
 
+import e1.credit.CreditCards;
+import e1.credit.LuhnValidator;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 
@@ -36,9 +39,6 @@ public class PaymentOperation {
         return issuer;
     }
 
-    public void setIssuer(String issuer) {
-        this.issuer = issuer;
-    }
 
     @Override
     public String toString() {
@@ -54,6 +54,22 @@ public class PaymentOperation {
         return date + ", " + creditNumber + ", " + issuer + ", " + amount;
     }
 
+    public void updateIssuerFromCreditNumber() {
+        this.issuer = getIssuerFromCreditNumber();
+    }
+
+    public String getIssuerFromCreditNumber() {
+        LuhnValidator luhnValidator = new LuhnValidator();
+        if (!luhnValidator.isValid(creditNumber))
+            return "invalid";
+
+        String issuer = CreditCards.getCreditCard(creditNumber);
+
+        if (issuer == null)
+            return "unknown";
+        else
+            return issuer;
+    }
 }
 
 
