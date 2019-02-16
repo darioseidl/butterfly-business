@@ -3,6 +3,7 @@ package e1;
 import e1.credit.CreditCards;
 import e1.credit.LuhnValidator;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -51,6 +52,8 @@ public class textRader {
 //        System.out.println(collect);
 
         documents.forEach(e -> e.setIssuer(getIssuer(e.getCriditNumb())));
+
+        documents.sort(Comparator.comparing(document::getDate));
 
         System.out.println(documents);
 
