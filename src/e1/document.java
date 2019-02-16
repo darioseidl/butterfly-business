@@ -3,13 +3,14 @@ package e1;
 public class document {
     private String date;
     private String criditNumb;
-    private String amount;
+    private Double amount;
     private String issuer;
 
-    public document(String date, String criditNumb, String amount) {
+    public document(String date, String criditNumb, Double amount) {
         this.date = date;
         this.criditNumb = criditNumb;
         this.amount = amount;
+
     }
 
     public String getDate() {
@@ -21,7 +22,7 @@ public class document {
     }
 
 
-    public String getAmount() {
+    public Double getAmount() {
         return amount;
     }
 

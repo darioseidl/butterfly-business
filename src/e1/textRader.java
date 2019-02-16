@@ -61,6 +61,11 @@ public class textRader {
 
         csvLines.add(0, "Date, Credit-Card-Number, Credit-Card-Issuer, Amount-Paid");
         WritingFiles.write(csvLines, "butterfly.csv");
+        double totalAmount = documents.stream()
+                .mapToDouble(document::getAmount)
+                .sum();
+        System.out.println("The total is "+ totalAmount);
+
     }
 
     public static String getIssuer(String creditNumber) {
@@ -82,7 +87,7 @@ public class textRader {
                 .map(columns -> new document(
                         columns[0],
                         columns[1],
-                        columns[2]))
+                        Double.valueOf(columns[2])))
                 .collect(Collectors.toList());
 
 
