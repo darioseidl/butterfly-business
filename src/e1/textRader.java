@@ -1,5 +1,6 @@
 package e1;
 
+import e1.credit.CreditCards;
 import e1.credit.LuhnValidator;
 
 import java.util.List;
@@ -55,7 +56,9 @@ public class textRader {
         if (!luhnValidator.isValid(creditNumber))
             return "invalid";
 
-        String issuer = "tobedone";
+
+        String issuer =  CreditCards.getCreditCard(creditNumber);
+
         if (issuer == null)
             return "unknown";
         else
@@ -69,7 +72,6 @@ public class textRader {
                         columns[0],
                         columns[1],
                         columns[2]))
-
                 .collect(Collectors.toList());
 
 

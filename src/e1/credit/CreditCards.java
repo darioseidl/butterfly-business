@@ -6,7 +6,7 @@ import java.util.List;
 public class CreditCards {
 
     private static List<CreditCard> creditCards = Arrays.asList(
-            new AmericanExpress(), new MasterCard(), new Visa()
+            new MasterCard(), new Visa()
     );
 
     public static String getCreditCard(String cardNumber) {
@@ -15,6 +15,6 @@ public class CreditCards {
                 return creditCard.getName();
             }
         }
-        return "INVALID";
+        return null;
     }
 }
