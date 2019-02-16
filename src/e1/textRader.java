@@ -5,10 +5,7 @@ import e1.credit.LuhnValidator;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -107,6 +104,13 @@ public class textRader {
                         .get();
 
         System.out.println("most used issuer: " + mostUsedIssuer);
+        List<String> resultLine=new ArrayList<>();
+        resultLine.add("The total is "+ totalAmount);
+        resultLine.add("most profitable month: " + mostProfitable);
+        resultLine.add("average by month: " + groupAverageByYearMonth);
+        resultLine.add("most used issuer: " + mostUsedIssuer);
+
+        WritingFiles.write(resultLine,"Result.txt");
     }
 
     public static String getIssuer(String creditNumber) {
@@ -137,6 +141,7 @@ public class textRader {
                 .mapToObj(index -> line.substring(index, index + 3))
                 .collect(Collectors.toList());
     }
+
 
 
 }
