@@ -2,18 +2,18 @@ package e1.credit;
 
 import java.util.Arrays;
 
-public class MasterCard extends CreditCard {
+public class InstaPayment extends CreditCard {
 
-    public MasterCard() {
+    public InstaPayment() {
         super(Arrays.asList(
                 new LengthValidator(Arrays.asList("16")),
-                new StartsWithValidator(Arrays.asList("51", "52", "53", "54", "55","222100", "272099"))
+                new StartsWithValidator(Arrays.asList("637", "638", "639"))
         ));
     }
 
     @Override
     public String getName() {
-        return "MasterCard";
+        return "InstaPayment";
     }
 
 }
