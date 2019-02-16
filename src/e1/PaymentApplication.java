@@ -6,6 +6,10 @@ import e1.intelligence.BusinessFileWriter;
 import e1.operation.PaymentOperation;
 import e1.operation.SevenSegmentMapping;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -32,9 +36,21 @@ public class PaymentApplication {
 
         paymentOperations.sort(Comparator.comparing(PaymentOperation::getDate));
 
+        createDir("output");
+
         CSVFileWriter.writeCSV(paymentOperations, "output/Payments.csv");
 
         BusinessFileWriter.writeBusinessIntelligenceReport(paymentOperations, "output/Report.txt");
+    }
+
+    private static void createDir(String filePath) {
+        try {
+            Path dir = Paths.get(filePath);
+            if (!Files.exists(dir))
+                Files.createDirectory(dir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static String translateStrangeDigits(List<String> lines, int i) {
