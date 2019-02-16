@@ -10,13 +10,6 @@ import java.util.List;
 
 public class WritingFiles {
 
-//    public static void main(String[] args) {
-//        List<String> names = Arrays.asList("Badi", "Mehran", "Omar", "Marj");
-//
-//        write(names, "names-week11.txt");
-//        append(names, "names-week11.txt");
-//    }
-
     public static void write(List<String> lines, String filePath) {
         try {
             Path path = Paths.get(filePath);
@@ -25,15 +18,5 @@ public class WritingFiles {
             e.printStackTrace();
         }
     }
-
-//    public static void append(List<String> lines, String filePath) {
-//        try {
-//            Path path = Paths.get(filePath);
-//            Files.write(path, lines, StandardOpenOption.APPEND);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 
 }
